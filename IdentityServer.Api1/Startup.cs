@@ -26,7 +26,20 @@ namespace IdentityServer.Api1
                     options.Authority = "https://localhost:5001";
                     options.Audience = "resource_api1";
                 });
-            
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ReadProduct", policy =>
+                {
+                    policy.RequireClaim("scope", "api1.read");
+                });
+                
+                options.AddPolicy("UpdateOrCreate", policy =>
+                {
+                    policy.RequireClaim("scope", new[] { "api1.update", "api1.create" });
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

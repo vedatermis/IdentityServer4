@@ -10,7 +10,7 @@ namespace IdentityServer.Api1.Controllers
     public class ProductsController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "ReadProduct")]
         public IActionResult GetProducts()
         {
             var productList = new List<Product>
@@ -24,6 +24,18 @@ namespace IdentityServer.Api1.Controllers
                 }
             };
             return Ok(productList);
+        }
+
+        [Authorize(Policy = "UpdateOrCreate")]
+        public IActionResult UpdateProduct(int id)
+        {
+            return Ok($"Id' si {id} olan ürün güncellenmiştir.");
+        }
+        
+        [Authorize(Policy = "UpdateOrCreate")]
+        public IActionResult CreateProduct(Product product)
+        {
+            return Ok(product);
         }
     }
 }
