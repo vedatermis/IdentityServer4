@@ -1,8 +1,13 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using IdentityServer.Client1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace IdentityServer.Client1.Controllers
 {
@@ -44,13 +49,15 @@ namespace IdentityServer.Client1.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
+                var products = JsonConvert.DeserializeObject<List<Product>>(content);
+
+                return View(products);
             }
             else
             {
-                
+                var product = new List<Product>();
+                return View(product);
             }
-            
-            return View();
         }
     }
 }
