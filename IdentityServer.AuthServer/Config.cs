@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -51,6 +52,15 @@ namespace IdentityServer.AuthServer
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "api1.read", "api2.write", "api2.update" }
+                },
+                new Client
+                {
+                    ClientId = "Client1MVC",
+                    ClientName = "Client 1 MVC Application",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RedirectUris = new string[] { "http://localhost:5002/sign-oidc" },
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile }
                 }
             };
         }
