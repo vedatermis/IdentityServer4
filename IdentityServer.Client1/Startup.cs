@@ -32,6 +32,7 @@ namespace IdentityServer.Client1
                     options.ClientId = "Client1MVC";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
+                    options.GetClaimsFromUserInfoEndpoint = true;
                 });
 
             services.AddControllersWithViews();
