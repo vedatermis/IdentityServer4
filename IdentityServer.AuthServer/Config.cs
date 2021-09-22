@@ -59,7 +59,8 @@ namespace IdentityServer.AuthServer
                     ClientName = "Client 1 MVC Application",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Hybrid,
-                    RedirectUris = new string[] { "http://localhost:5002/sign-oidc" },
+                    RequirePkce = false,
+                    RedirectUris = new string[] { "https://localhost:5002/signin-oidc" },
                     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile }
                 }
             };
