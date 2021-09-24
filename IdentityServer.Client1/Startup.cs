@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,13 @@ namespace IdentityServer.Client1
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
                     options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+                    options.Scope.Add("api1.read");
+                    options.Scope.Add("offline_access");
+                    options.Scope.Add("CountryAndCity");
+
+                    options.ClaimActions.MapUniqueJsonKey("country", "country");
+                    options.ClaimActions.MapUniqueJsonKey("city", "city");
                 });
 
             services.AddControllersWithViews();

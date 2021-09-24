@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityServer4;
@@ -61,7 +62,20 @@ namespace IdentityServer.AuthServer
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RequirePkce = false,
                     RedirectUris = new string[] { "https://localhost:5002/signin-oidc" },
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile }
+                    PostLogoutRedirectUris = new string[] { "https://localhost:5002/signout-callback-oidc" },
+                    AccessTokenLifetime = 2 * 60 * 60,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    AbsoluteRefreshTokenLifetime = 60 * 60 * 60,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    RequireConsent = true,
+                    AllowedScopes = { 
+                        IdentityServerConstants.StandardScopes.OpenId, 
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity"
+                    }
                 }
             };
         }
@@ -71,7 +85,14 @@ namespace IdentityServer.AuthServer
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResource
+                { 
+                    Name = "CountryAndCity", 
+                    DisplayName = "Country And City", 
+                    Description = "Kullanýcýnýn Ülke Ve Þehir Bilgisi",
+                    UserClaims = new[] { "country", "city" }
+                }
             };
         }
 
@@ -84,14 +105,26 @@ namespace IdentityServer.AuthServer
                     SubjectId = "1",
                     Username = "vedatermis",
                     Password = "password",
-                    Claims = new List<Claim> { new Claim("given_name", "Vedat"), new Claim("family_name", "ERMIS")} 
+                    Claims = new List<Claim> 
+                    { 
+                        new Claim("given_name", "Vedat"), 
+                        new Claim("family_name", "ERMIS"),
+                        new Claim("country", "Turkey"),
+                        new Claim("city", "Ýstanbul")
+                    } 
                 },
                 new TestUser
                 {
                     SubjectId = "2",
                     Username = "ayazermis",
                     Password = "password",
-                    Claims = new List<Claim> { new Claim("given_name", "Ayaz"), new Claim("family_name", "ERMIS")} 
+                    Claims = new List<Claim> 
+                    { 
+                        new Claim("given_name", "Ayaz"), 
+                        new Claim("family_name", "ERMIS"), 
+                        new Claim("country", "Turkey"),
+                        new Claim("city", "Ýstanbul")
+                    } 
                 }
             };
         }
