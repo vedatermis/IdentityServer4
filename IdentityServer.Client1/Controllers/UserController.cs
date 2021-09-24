@@ -73,6 +73,12 @@ namespace IdentityServer.Client1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "admin")]
+        public IActionResult AdminPage()
+        {
+            return View();
+        }
+
         public async Task Logout()
         {
             await HttpContext.SignOutAsync("Cookies");

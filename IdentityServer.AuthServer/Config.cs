@@ -74,7 +74,8 @@ namespace IdentityServer.AuthServer
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "api1.read",
-                        "CountryAndCity"
+                        "CountryAndCity",
+                        "Roles"
                     }
                 }
             };
@@ -92,6 +93,16 @@ namespace IdentityServer.AuthServer
                     DisplayName = "Country And City", 
                     Description = "Kullanýcýnýn Ülke Ve Þehir Bilgisi",
                     UserClaims = new[] { "country", "city" }
+                },
+                new IdentityResource
+                {
+                    Name = "Roles",
+                    DisplayName = "Roles",
+                    Description = "User Roles",
+                    UserClaims = new[] 
+                    { 
+                        "role"
+                    }
                 }
             };
         }
@@ -110,7 +121,8 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name", "Vedat"), 
                         new Claim("family_name", "ERMIS"),
                         new Claim("country", "Turkey"),
-                        new Claim("city", "Ýstanbul")
+                        new Claim("city", "Ýstanbul"),
+                        new Claim("role", "admin"),
                     } 
                 },
                 new TestUser
@@ -123,7 +135,8 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name", "Ayaz"), 
                         new Claim("family_name", "ERMIS"), 
                         new Claim("country", "Turkey"),
-                        new Claim("city", "Ýstanbul")
+                        new Claim("city", "Ýstanbul"),
+                        new Claim("role", "user"),
                     } 
                 }
             };
