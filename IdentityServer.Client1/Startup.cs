@@ -1,3 +1,4 @@
+using IdentityServer.Client1.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,13 +20,20 @@ namespace IdentityServer.Client1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<IAppHttpClient, AppHttpClient>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
 
             })
-                .AddCookie("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.AccessDeniedPath = "/Home/AccessDenied";
+                })
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.SignInScheme = "Cookies";

@@ -73,7 +73,7 @@ namespace IdentityServer.Client1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admina")]
         public IActionResult AdminPage()
         {
             return View();

@@ -77,6 +77,30 @@ namespace IdentityServer.AuthServer
                         "CountryAndCity",
                         "Roles"
                     }
+                },
+                new Client
+                {
+                    ClientId = "Client2MVC",
+                    ClientName = "Client 2 MVC Application",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RequirePkce = false,
+                    RedirectUris = new string[] { "https://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris = new string[] { "https://localhost:5002/signout-callback-oidc" },
+                    AccessTokenLifetime = 2 * 60 * 60,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    AbsoluteRefreshTokenLifetime = 60 * 60 * 60,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    RequireConsent = true,
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
+                    }
                 }
             };
         }
