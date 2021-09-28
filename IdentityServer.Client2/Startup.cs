@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +19,40 @@ namespace IdentityServer.Client2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+
+            })
+                .AddCookie("Cookies", options =>
+                {
+                    options.AccessDeniedPath = "/Home/AccessDenied";
+                })
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.SignInScheme = "Cookies";
+                    options.Authority = "https://localhost:5001";
+                    options.ClientId = "Client2MVC";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code id_token";
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+                    options.Scope.Add("api1.read");
+                    options.Scope.Add("offline_access");
+                    options.Scope.Add("CountryAndCity");
+                    options.Scope.Add("Roles");
+
+                    options.ClaimActions.MapUniqueJsonKey("country", "country");
+                    options.ClaimActions.MapUniqueJsonKey("city", "city");
+                    options.ClaimActions.MapUniqueJsonKey("role", "role");
+
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        RoleClaimType = "role"
+                    };
+                });
+
             services.AddControllersWithViews();
         }
 
@@ -45,6 +75,7 @@ namespace IdentityServer.Client2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
