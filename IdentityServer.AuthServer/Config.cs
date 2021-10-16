@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityServer4;
@@ -101,6 +100,24 @@ namespace IdentityServer.AuthServer
                         "CountryAndCity",
                         "Roles"
                     }
+                },
+                new Client
+                {
+                    ClientId = "AngularClient",
+                    RequireClientSecret = false,
+                    ClientName = "Angular Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1.read",
+                        "CountryAndCity",
+                        "Roles"
+                    },
+                    RedirectUris = { "http://localhost:4200/callback" },
+                    AllowedCorsOrigins = { "http://localhost:4200" },
+                    PostLogoutRedirectUris = { "http://localhost:4200" }
                 }
             };
         }
@@ -115,7 +132,7 @@ namespace IdentityServer.AuthServer
                 { 
                     Name = "CountryAndCity", 
                     DisplayName = "Country And City", 
-                    Description = "Kullanýcýnýn Ülke Ve Þehir Bilgisi",
+                    Description = "Kullanï¿½cï¿½nï¿½n ï¿½lke Ve ï¿½ehir Bilgisi",
                     UserClaims = new[] { "country", "city" }
                 },
                 new IdentityResource
@@ -145,7 +162,7 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name", "Vedat"), 
                         new Claim("family_name", "ERMIS"),
                         new Claim("country", "Turkey"),
-                        new Claim("city", "Ýstanbul"),
+                        new Claim("city", "ï¿½stanbul"),
                         new Claim("role", "admin"),
                     } 
                 },
@@ -159,7 +176,7 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name", "Ayaz"), 
                         new Claim("family_name", "ERMIS"), 
                         new Claim("country", "Turkey"),
-                        new Claim("city", "Ýstanbul"),
+                        new Claim("city", "ï¿½stanbul"),
                         new Claim("role", "user"),
                     } 
                 }
